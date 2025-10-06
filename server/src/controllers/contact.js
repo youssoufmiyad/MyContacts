@@ -1,5 +1,6 @@
 import Contact from "../models/Contact.js";
 import { generateContactSlug } from "../utils/generateSlug.js";
+import { EMAIL_REGEX, PHONE_REGEX } from "../utils/regex.js";
 
 async function getContacts(req, res) {
   try {
@@ -44,7 +45,12 @@ async function getContactBySlug(req, res) {
 async function modifyContact(req, res) {
   const contactId = req.params.id;
   const { firstName, lastName, phone, email } = req.body;
-
+  if (email !== undefined && !validateEmail(email)) {
+    return res.status(400).json({ message: "Invalid email format" });
+  }
+  if (phone !== undefined && !validatePhone(phone)) {
+    return res.status(400).json({ message: "Invalid phone number format" });
+  }
   try {
     const contact = await Contact.findByIdAndUpdate(
       contactId,
@@ -67,6 +73,12 @@ async function addContact(req, res) {
     const existingContact = await Contact.findOne({ email });
     if (existingContact) {
       return res.status(400).json({ message: "Email adress already used" });
+    }
+    if (!validateEmail(email)) {
+      return res.status(400).json({ message: "Invalid email format" });
+    }
+    if (!validatePhone(phone)) {
+      return res.status(400).json({ message: "Invalid phone number format" });
     }
     const slug = await generateContactSlug(firstName, lastName);
 
@@ -102,10 +114,18 @@ async function deleteContact(req, res) {
   }
 }
 
+function validateEmail(email) {
+  return EMAIL_REGEX.test(email);
+}
+
+function validatePhone(phone) {
+  return PHONE_REGEX.test(phone);
+}
+
 export default {
   getContacts,
   getContactById,
-getContactBySlug,
+  getContactBySlug,
   modifyContact,
   addContact,
   deleteContact,

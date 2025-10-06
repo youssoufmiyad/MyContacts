@@ -131,6 +131,7 @@ contactRouter.get("/:slug", contactController.getContactBySlug);
  *               - firstName
  *               - lastName
  *               - email
+ *               - phone
  *             properties:
  *               firstName:
  *                 type: string
@@ -158,7 +159,15 @@ contactRouter.get("/:slug", contactController.getContactBySlug);
  *                 contact:
  *                   $ref: '#/components/schemas/Contact'
  *       400:
- *         description: Email déjà utilisé
+ *         description: Format d'email ou de téléphone invalide, ou email déjà utilisé
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Invalid email format
  *       500:
  *         description: Erreur serveur
  */
@@ -203,6 +212,8 @@ contactRouter.post("/", contactController.addContact);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Contact'
+ *       400:
+ *         description: Format d'email ou de téléphone invalide
  *       404:
  *         description: Contact non trouvé
  *       500:
