@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import { PASSWORD_REGEX, EMAIL_REGEX } from "../utils/regex.js";
 
 async function register(req, res) {
-  if (!req.body){
+  if (!req.body) {
     return res.status(400).json({ message: "No data provided" });
   }
   const { email, password } = req.body;
@@ -25,7 +25,7 @@ async function register(req, res) {
           "Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, one number, and one special character.",
       });
     }
-    const hashedPassword = await bcrypt.hash(password,  10);
+    const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({
       email,
       password: hashedPassword,
@@ -53,9 +53,34 @@ async function login(req, res) {
     }
     // Générer un token JWT
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn:  remember ? "7d" : "24h",
+      expiresIn: remember ? "7d" : "24h",
     });
-    res.status(200).json({ token:token, user:user });
+    res.status(200).json({ token: token, user: user });
+  } catch (error) {
+    res.status(500).json({ message: `Server error : ${error}` });
+  }
+}
+
+async function getCurrentUser(req, res) {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: `Server error : ${error}` });
+  }
+}
+
+async function emailTaken(req, res) {
+  const { email } = req.body;
+  try {
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(200).json({ taken: true });
+    }
+    res.status(200).json({ taken: false });
   } catch (error) {
     res.status(500).json({ message: `Server error : ${error}` });
   }
@@ -64,4 +89,6 @@ async function login(req, res) {
 export default {
   register,
   login,
+  getCurrentUser,
+  emailTaken,
 };

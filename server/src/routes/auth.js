@@ -1,5 +1,6 @@
 import express from 'express';
 import authController from '../controllers/auth.js';
+import { requireAuth } from '../middlewares/requireAuth.js';
 
 const authRouter = express.Router();
 
@@ -119,5 +120,9 @@ authRouter.post('/signup', authController.register);
  *         description: Erreur serveur
  */
 authRouter.post('/login', authController.login);
+
+authRouter.get('/me', requireAuth, authController.getCurrentUser);
+
+authRouter.post('/email-taken', authController.emailTaken);
 
 export default authRouter;

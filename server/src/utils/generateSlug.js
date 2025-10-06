@@ -11,21 +11,25 @@ const slugify = (str) => {
 };
 
 async function contactSlugExists(slug) {
-  try {
-    const response = await fetch(`${process.env.API_URL}/api/contacts/${slug}`);
-
-    if (response.ok) {
-      return true;
-    } else if (response.status === 404) {
-      return false;
-    } else {
-      console.error(`Unexpected response status: ${response.status}`);
-      return false;
-    }
-  } catch (error) {
-    console.error("Error checking slug:", error);
+try {
+  const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/contacts/${slug}`);
+  if (response.status === 200) {
+    return true;
+  } else if (response.status === 404) {
+    return false;
+  } else {
+    console.error(`Unexpected response status: ${response.status}`);
     return false;
   }
+} catch (error) {
+  if (error.response) {
+    console.error(`Error checking slug: ${error.response.status}`);
+  } else {
+    console.error("Error checking slug:", error.message);
+  }
+  return false;
+}
+
 }
 
 

@@ -3,12 +3,15 @@ import { generateContactSlug } from "../utils/generateSlug.js";
 import { EMAIL_REGEX, PHONE_REGEX } from "../utils/regex.js";
 
 async function getContacts(req, res) {
-  try {
-    const contacts = await Contact.find();
-    if (!contacts || contacts.length === 0) {
-      return res.status(404).json({ message: "No contacts found" });
-    }
-    res.status(200).json(contacts);
+    const { page = 1, limit = 10 } = req.query;
+    const skip = (page - 1) * limit;
+
+    try {
+        const contacts = await Contact.find().skip(skip).limit(limit);
+        if (!contacts || contacts.length === 0) {
+            return res.status(404).json({ message: "No contacts found" });
+        }
+    res.status(200).json({ contacts, page: parseInt(page), limit: parseInt(limit), total: await Contact.countDocuments(), totalPages: Math.ceil(await Contact.countDocuments() / limit) });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
