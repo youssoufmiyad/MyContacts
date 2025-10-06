@@ -187,13 +187,13 @@ contactRouter.post("/", contactController.addContact);
  *         schema:
  *           type: string
  *         description: ID du contact à modifier
- *     requestHeader:
  *       - in: header
  *         name: Authorization
- *         required: true
  *         schema:
  *           type: string
  *           example: Bearer <token>
+ *         description: Token JWT pour l'authentification
+ *         required: true
  *     requestBody:
  *       required: true
  *       content:
@@ -242,13 +242,13 @@ contactRouter.patch("/:id", requireAuth, contactController.modifyContact);
  *         schema:
  *           type: string
  *         description: ID du contact à supprimer
- *     requestHeader:
  *       - in: header
  *         name: Authorization
- *         required: true
  *         schema:
  *           type: string
  *           example: Bearer <token>
+ *         description: Token JWT pour l'authentification
+ *         required : true
  *     responses:
  *       200:
  *         description: Contact supprimé avec succès
