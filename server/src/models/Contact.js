@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { PHONE_REGEX } from "../utils/regex.js";
 const contactSchema = new mongoose.Schema({
   firstName: {
     type: String,
@@ -10,9 +11,13 @@ const contactSchema = new mongoose.Schema({
   },
   phone: {
     type: String,
-    minlength: 10,
-    maxlength: 20,
     required: true,
+    validate: {
+      validator: function(v) {
+        return PHONE_REGEX.test(v);
+      },
+      message: props => `${props.value} is not a valid phone number`
+    },
   },
   email: {
     type: String,
