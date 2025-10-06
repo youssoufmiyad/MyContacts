@@ -17,3 +17,4 @@ function requireAuth(req, res, next) {
         return res.status(401).send({ message: "Unauthorized" });
     }
 } 
+export { requireAuth };

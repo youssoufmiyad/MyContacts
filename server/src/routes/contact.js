@@ -1,5 +1,6 @@
 import express from "express";
 import contactController from "../controllers/contact.js";
+import { requireAuth } from "../middlewares/requireAuth.js";
 
 const contactRouter = express.Router();
 
@@ -186,6 +187,13 @@ contactRouter.post("/", contactController.addContact);
  *         schema:
  *           type: string
  *         description: ID du contact à modifier
+ *     requestHeader:
+ *       - in: header
+ *         name: Authorization
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: Bearer <token>
  *     requestBody:
  *       required: true
  *       content:
@@ -219,7 +227,7 @@ contactRouter.post("/", contactController.addContact);
  *       500:
  *         description: Erreur serveur
  */
-contactRouter.patch("/:id", contactController.modifyContact);
+contactRouter.patch("/:id", requireAuth, contactController.modifyContact);
 
 /**
  * @swagger
@@ -234,6 +242,13 @@ contactRouter.patch("/:id", contactController.modifyContact);
  *         schema:
  *           type: string
  *         description: ID du contact à supprimer
+ *     requestHeader:
+ *       - in: header
+ *         name: Authorization
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: Bearer <token>
  *     responses:
  *       200:
  *         description: Contact supprimé avec succès
@@ -250,6 +265,6 @@ contactRouter.patch("/:id", contactController.modifyContact);
  *       500:
  *         description: Erreur serveur
  */
-contactRouter.delete("/:id", contactController.deleteContact);
+contactRouter.delete("/:id", requireAuth, contactController.deleteContact);
 
 export default contactRouter;
