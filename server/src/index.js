@@ -7,6 +7,7 @@ import swaggerJSDoc from "swagger-jsdoc"
 import swaggerUi from "swagger-ui-express"
 import dotenv from "dotenv"
 import authRouter from "./routes/auth.js"
+import contactRouter from "./routes/contact.js"
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -43,6 +44,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/mycontacts/auth", authRouter);
+app.use("/mycontacts/contacts", contactRouter);
 
 // Doc swagger
 app.use("/mycontacts/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
