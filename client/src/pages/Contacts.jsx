@@ -1,17 +1,24 @@
 import { useState, useEffect } from "react";
-import { getAllContacts } from "../utils/contacts";
+import { getAllContacts, searchContacts } from "../utils/contacts";
 import { useSearchParams } from "react-router-dom";
 
 const Contacts = () => {
   const [contacts, setContacts] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const page = searchParams.get("page") || 1;
+  const query = searchParams.get("query");
 
   useEffect(() => {
-    getAllContacts(page)
-      .then((data) => setContacts(data.contacts))
-      .catch((err) => console.error(err));
-  }, [page]);
+    if (query) {
+      searchContacts(query)
+        .then((data) => setContacts(data))
+        .catch((err) => console.error(err));
+    } else {
+      getAllContacts(page)
+        .then((data) => setContacts(data.contacts))
+        .catch((err) => console.error(err));
+    }
+  }, [page, query]);
 
   useEffect(() => {
     console.log(contacts);

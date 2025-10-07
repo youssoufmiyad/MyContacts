@@ -8,7 +8,17 @@ export async function getAllContacts(page = 1, limit = 10) {
         limit,
       },
     });
-    console.log(response.data)
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function searchContacts(query) {
+  try {
+    const response = await api.get("/contacts/search", {
+      params: { query },
+    });
     return response.data;
   } catch (error) {
     console.error(error);
