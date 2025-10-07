@@ -2,7 +2,7 @@
 import { useState } from "react";
 import api from "../utils/axios";
 import Cookies from "js-cookie";
-import { useRouter } from "next/navigation";
+import { redirect } from "react-router-dom";
 
 export function useAuth() {
   const [token, setToken] = useState(() => Cookies.get("token"));
@@ -10,7 +10,6 @@ export function useAuth() {
     const stored = localStorage.getItem("user");
     return stored ? JSON.parse(stored) : null;
   });
-  const router = useRouter();
 
   const login = async (email, password) => {
     try {
@@ -20,7 +19,7 @@ export function useAuth() {
       setToken(token);
       setUser(user);
       Cookies.set("token", token, { expires: 7 });
-      router.push("/contacts");
+      throw redirect("/contacts");
     } catch (err) {
       console.log(err || "Erreur de connexion");
     }

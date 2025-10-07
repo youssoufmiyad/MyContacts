@@ -1,8 +1,7 @@
-"use client";
 import { useAuth } from "../hooks/useAuth";
 import { useState } from "react";
 
-export default function LoginPage() {
+const Login = () => {
   const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -52,4 +51,6 @@ export default function LoginPage() {
       {errorMessage && <p className="error">{errorMessage}</p>}
     </div>
   );
-}
+};
+
+export default Login;

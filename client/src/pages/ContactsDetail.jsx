@@ -1,17 +1,17 @@
-"use client";
+import React from "react";
+
 import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
-import { deleteContact, getContact, modifyContact } from "@/app/utils/contacts";
+import { useParams } from "react-router-dom";
+import { deleteContact, getContact, modifyContact } from "../utils/contacts";
 import Cookies from "js-cookie";
 
-export default function ContactDetailsPage() {
+const ContactsDetail = () => {
   const [contact, setContact] = useState(null);
   const [firstName, setFirstName] = useState();
   const [lastName, setLastName] = useState();
   const [email, setEmail] = useState();
   const [phone, setPhone] = useState();
-  const params = useParams();
-  const { slug } = params;
+  const { slug } = useParams();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,7 +29,9 @@ export default function ContactDetailsPage() {
 
   const handleDelete = async () => {
     try {
-      const confirmed = confirm("Are you sure you want to delete this contact?");
+      const confirmed = confirm(
+        "Are you sure you want to delete this contact?"
+      );
       if (confirmed) {
         await deleteContact(contact._id, Cookies.get("token"));
         alert("Contact deleted successfully");
@@ -51,7 +53,6 @@ export default function ContactDetailsPage() {
       })
       .catch((err) => console.error(err));
   }, [slug]);
-
   return (
     <div>
       <h1>Contact Details</h1>
@@ -94,11 +95,15 @@ export default function ContactDetailsPage() {
             />
           </div>
           <button type="submit">Update Contact</button>
-          <button type="button" onClick={handleDelete}>Delete contact</button>
+          <button type="button" onClick={handleDelete}>
+            Delete contact
+          </button>
         </form>
       ) : (
         <p>Loading contact details...</p>
       )}
     </div>
   );
-}
+};
+
+export default ContactsDetail;

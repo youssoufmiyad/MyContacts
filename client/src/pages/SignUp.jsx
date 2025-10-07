@@ -1,9 +1,9 @@
-"use client";
 import { useState } from "react";
 import { EMAIL_REGEX, PASSWORD_REGEX } from "../utils/regex";
 import { addUser, emailExists } from "../utils/auth";
 
-export default function RegisterPage() {
+
+const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -37,16 +37,16 @@ export default function RegisterPage() {
     }
 
     try {
-        const response = await addUser({ email, password });
-        console.log(response)
-        setErrorMessage(null)
-        setSuccessMessage("Registration successful! You can now log in.")
-        setEmail("");
-        setPassword("");
-        setConfirmPassword("");
+      const response = await addUser({ email, password });
+      console.log(response);
+      setErrorMessage(null);
+      setSuccessMessage("Registration successful! You can now log in.");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
     } catch (error) {
-        console.log(error)
-        setErrorMessage("Failed to register : ", error.message);
+      console.log(error);
+      setErrorMessage("Failed to register : ", error.message);
     }
   };
   return (
@@ -91,4 +91,6 @@ export default function RegisterPage() {
       {successMessage && <p className="success">{successMessage}</p>}
     </div>
   );
-}
+};
+
+export default SignUp;
