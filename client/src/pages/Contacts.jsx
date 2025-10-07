@@ -26,14 +26,18 @@ const Contacts = () => {
   return (
     <div>
       <h1>Contacts</h1>
-      <ul>
-        {contacts?.map((contact) => (
-          <li key={contact._id}>
-            <span className="lastname">{contact.lastName}</span>{" "}
-            <span className="firstN">{contact.firstName}</span>
-          </li>
-        ))}
-      </ul>
+      {contacts ? (
+        <ul>
+          {contacts?.map((contact) => (
+            <li key={contact._id}>
+              <span className="lastname">{contact.lastName}</span>{" "}
+              <span className="firstN">{contact.firstName}</span>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>no contacts</p>
+      )}
     </div>
   );
 };

@@ -15,11 +15,11 @@ function App() {
       <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route element={<ProtectedRoutes />}>
           <Route path="/contacts" element={<Contacts />} />
-          {/* <ProtectedRoutes> */}
             <Route path="/contacts/:slug" element={<ContactsDetail />} />
             <Route path="/contacts/add" element={<AddContact />} />
-          {/* </ProtectedRoutes> */}
+          </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
         </Routes>
