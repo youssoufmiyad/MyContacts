@@ -38,6 +38,7 @@ const AddContact = () => {
       setPhone("");
     } catch (error) {
       console.error("Error adding contact:", error);
+      alert(`Error adding contact: ${error.message || error}`);
     }
   };
   return (
@@ -46,7 +47,7 @@ const AddContact = () => {
         <div className="content-container">
           <h1>Add Contact</h1>
           <form onSubmit={handleSubmit}>
-            <div className="form-group">
+            <div className="form-group" onClick={focusFirstNameInput}>
               <label htmlFor="firstName">First Name:</label>
               <input
                 type="text"
@@ -57,7 +58,7 @@ const AddContact = () => {
                 onChange={(e) => setFirstName(e.target.value)}
               />
             </div>
-            <div className="form-group">
+            <div className="form-group" onClick={focusLastNameInput}>
               <label htmlFor="lastName">Last Name:</label>
               <input
                 type="text"
@@ -68,7 +69,7 @@ const AddContact = () => {
                 onChange={(e) => setLastName(e.target.value)}
               />
             </div>
-            <div className="form-group">
+            <div className="form-group" onClick={focusEmailInput}>
               <label htmlFor="email">Email:</label>
               <input
                 type="email"
@@ -79,7 +80,7 @@ const AddContact = () => {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            <div className="form-group">
+            <div className="form-group" onClick={focusPhoneInput}>
               <label htmlFor="phone">Phone:</label>
               <input
                 type="tel"

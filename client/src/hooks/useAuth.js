@@ -2,10 +2,10 @@
 import { useState } from "react";
 import api from "../utils/axios";
 import Cookies from "js-cookie";
-import { redirect } from "react-router-dom";
-
+import { useNavigate } from "react-router";
 export function useAuth() {
   const [token, setToken] = useState(() => Cookies.get("token"));
+  const navigate = useNavigate();
 
   const login = async (email, password) => {
     try {
@@ -14,7 +14,8 @@ export function useAuth() {
 
       setToken(token);
       Cookies.set("token", token, { expires: 7 });
-      throw redirect("/contacts");
+      navigate("/contacts");
+      window.location.reload();
     } catch (err) {
       console.log(err || "Erreur de connexion");
     }

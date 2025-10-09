@@ -22,7 +22,6 @@ const Login = () => {
     e.preventDefault();
     try {
       await login(email, password);
-      window.location.reload();
     } catch (error) {
       console.error("Login failed:", error);
       setErrorMessage("nom d'utilisateur ou mot de passe incorrect");

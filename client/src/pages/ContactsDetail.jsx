@@ -44,6 +44,7 @@ const ContactsDetail = () => {
       alert("Contact updated successfully");
     } catch (error) {
       console.error("Error updating contact:", error);
+      alert(`Error updating contact: ${error.message || error}`);
     }
   };
 
@@ -59,6 +60,7 @@ const ContactsDetail = () => {
       }
     } catch (error) {
       console.error("Error deleting contact:", error);
+      alert(`Error deleting contact: ${error.message || error}`);
     }
   };
 
@@ -71,7 +73,7 @@ const ContactsDetail = () => {
         setEmail(data.email);
         setPhone(data.phone);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {console.error(err); alert(`Error fetching contact: ${err.message || err}`);});
   }, [slug]);
   return (
     <div>
