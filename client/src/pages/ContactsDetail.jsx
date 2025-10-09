@@ -1,6 +1,6 @@
 import React from "react";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { deleteContact, getContact, modifyContact } from "../utils/contacts";
 import Cookies from "js-cookie";
@@ -12,6 +12,26 @@ const ContactsDetail = () => {
   const [email, setEmail] = useState();
   const [phone, setPhone] = useState();
   const { slug } = useParams();
+  const firstNameRef = useRef(null);
+  const lastNameRef = useRef(null);
+  const phoneRef = useRef(null);
+  const emailRef = useRef(null);
+
+  const focusFirstNameInput = () => {
+    firstNameRef.current.focus();
+  };
+
+  const focusLastNameInput = () => {
+    lastNameRef.current.focus();
+  };
+
+  const focusEmailInput = () => {
+    emailRef.current.focus();
+  };
+
+  const focusPhoneInput = () => {
+    phoneRef.current.focus();
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -55,53 +75,63 @@ const ContactsDetail = () => {
   }, [slug]);
   return (
     <div>
-      <h1>Contact Details</h1>
-      {contact ? (
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="firstName">First Name:</label>
-            <input
-              type="text"
-              id="firstName"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-            />
-          </div>
-          <div>
-            <label htmlFor="lastName">Last Name:</label>
-            <input
-              type="text"
-              id="lastName"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-            />
-          </div>
-          <div>
-            <label htmlFor="email">Email:</label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div>
-            <label htmlFor="phone">Phone:</label>
-            <input
-              type="tel"
-              id="phone"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-            />
-          </div>
-          <button type="submit">Update Contact</button>
-          <button type="button" onClick={handleDelete}>
-            Delete contact
-          </button>
-        </form>
-      ) : (
-        <p>Loading contact details...</p>
-      )}
+      <section>
+        <div className="content-container">
+          <h1>Contact Details</h1>
+          {contact ? (
+            <form className="contact-detail-form" onSubmit={handleSubmit}>
+              <div className="form-group" onClick={focusFirstNameInput}>
+                <label htmlFor="firstName">First Name:</label>
+                <input
+                  type="text"
+                  id="firstName"
+                  ref={firstNameRef}
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                />
+              </div>
+              <div className="form-group" onClick={focusLastNameInput}>
+                <label htmlFor="lastName">Last Name:</label>
+                <input
+                  type="text"
+                  id="lastName"
+                  ref={lastNameRef}
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                />
+              </div>
+              <div className="form-group" onClick={focusEmailInput}>
+                <label htmlFor="email">Email:</label>
+                <input
+                  type="email"
+                  id="email"
+                  ref={emailRef}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+              <div className="form-group" onClick={focusPhoneInput}>
+                <label htmlFor="phone">Phone:</label>
+                <input
+                  type="tel"
+                  id="phone"
+                  ref={phoneRef}
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                />
+              </div>
+              <div className="actions">
+                <button type="submit">Update Contact</button>
+                <button type="button" onClick={handleDelete}>
+                  Delete contact
+                </button>
+              </div>
+            </form>
+          ) : (
+            <p className="loading">Loading contact details...</p>
+          )}
+        </div>
+      </section>
     </div>
   );
 };

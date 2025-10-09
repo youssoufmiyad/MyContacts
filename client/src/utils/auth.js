@@ -14,3 +14,17 @@ export async function emailExists(email) {
     throw error;
   }
 }
+
+export async function getCurrentUser(token) {
+  try {
+    const response = await api.get("/auth/me", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching current user:", error);
+    throw error;
+  }
+}

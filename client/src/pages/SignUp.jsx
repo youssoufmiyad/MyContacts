@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { EMAIL_REGEX, PASSWORD_REGEX } from "../utils/regex";
 import { addUser, emailExists } from "../utils/auth";
-
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -10,6 +9,19 @@ const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+  const confirmPasswordRef = useRef(null);
+
+  const focusEmailInput = () => {
+    emailRef.current.focus();
+  };
+  const focusPasswordInput = () => {
+    passwordRef.current.focus();
+  };
+  const focusConfirmPasswordInput = () => {
+    confirmPasswordRef.current.focus();
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -51,44 +63,61 @@ const SignUp = () => {
   };
   return (
     <div>
-      <h1>Register</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            value={email}
-            name="email"
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+      <section>
+        <div className="content-container">
+          <h1>Register</h1>
+          <form className="auth-form" onSubmit={handleSubmit}>
+            <div className="form-group" onClick={focusEmailInput}>
+              <label htmlFor="email">Email:</label>
+              <input
+                type="email"
+                value={email}
+                name="email"
+                placeholder="Email"
+                ref={emailRef}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group password" onClick={focusPasswordInput}>
+              <label htmlFor="password">Password:</label>
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                name="password"
+                placeholder="Password"
+                ref={passwordRef}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? "Hide" : "Show"} Password
+              </button>
+            </div>
+            <div className="form-group" onClick={focusConfirmPasswordInput}>
+              <label>Confirm Password:</label>
+              <input
+                type={showPassword ? "text" : "password"}
+                value={confirmPassword}
+                name="confirmPassword"
+                placeholder="Confirm Password"
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+                ref={confirmPasswordRef}
+              />
+            </div>
+            <button type="submit">Register</button>
+          </form>
+          {errorMessage && <p className="error">{errorMessage}</p>}
+          {successMessage && <p className="success">{successMessage}</p>}
+          <p className="login-link">
+            Already have an account? <a href="/login">Login</a>
+          </p>
         </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input
-            type={showPassword ? "text" : "password"}
-            value={password}
-            name="password"
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <button type="button" onClick={() => setShowPassword(!showPassword)}>
-            {showPassword ? "Hide" : "Show"} Password
-          </button>
-        </div>
-        <div>
-          <label>Confirm Password:</label>
-          <input
-            type={showPassword ? "text" : "password"}
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Register</button>
-      </form>
-      {errorMessage && <p className="error">{errorMessage}</p>}
-      {successMessage && <p className="success">{successMessage}</p>}
+      </section>
     </div>
   );
 };

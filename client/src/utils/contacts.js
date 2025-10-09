@@ -1,11 +1,16 @@
 import api from "./axios";
+import Cookies from "js-cookie";
 
 export async function getAllContacts(page = 1, limit = 10) {
   try {
+    const token = Cookies.get("token");
     const response = await api.get("/contacts", {
       params: {
         page,
         limit,
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
     });
     return response.data;
@@ -14,10 +19,15 @@ export async function getAllContacts(page = 1, limit = 10) {
   }
 }
 
-export async function searchContacts(query) {
+export async function searchContacts(query, page) {
   try {
+    console.log(query, page);
+    const token = Cookies.get("token");
     const response = await api.get("/contacts/search", {
-      params: { query },
+      params: { page, query },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
     return response.data;
   } catch (error) {
