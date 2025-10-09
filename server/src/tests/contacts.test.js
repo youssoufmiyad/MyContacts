@@ -1,4 +1,11 @@
-import { jest, describe, test, expect, afterAll, beforeEach } from "@jest/globals";
+import {
+  jest,
+  describe,
+  test,
+  expect,
+  afterAll,
+  beforeEach,
+} from "@jest/globals";
 import request from "supertest";
 import mongoose from "mongoose";
 
@@ -70,7 +77,10 @@ describe("🧪 Tests de l'API /mycontacts/contacts", () => {
       .get("/mycontacts/contacts")
       .set("Authorization", "Bearer fake-jwt-token");
 
-    expect(jwtMock.verify).toHaveBeenCalledWith("fake-jwt-token", "test-secret");
+    expect(jwtMock.verify).toHaveBeenCalledWith(
+      "fake-jwt-token",
+      "test-secret"
+    );
     expect(res.status).toBe(200);
     expect(res.body.contacts).toHaveLength(1);
     expect(res.body.contacts[0].firstName).toBe("John");
@@ -125,7 +135,9 @@ describe("🧪 Tests de l'API /mycontacts/contacts", () => {
       { _id: "2", firstName: "Jane", lastName: "Doe", email: "jane@doe.com" },
       { _id: "3", firstName: "Bob", lastName: "Brown", email: "bob@brown.com" },
     ];
-    Contact.find.mockResolvedValue(fakeContacts);
+
+    Contact.find.mockResolvedValue([fakeContacts[2]]);
+    Contact.countDocuments.mockResolvedValue(1);
 
     const res = await request(app)
       .get("/mycontacts/contacts/search")
@@ -134,16 +146,16 @@ describe("🧪 Tests de l'API /mycontacts/contacts", () => {
 
     expect(res.status).toBe(200);
     expect(res.body.contacts).toHaveLength(1);
-    // expect(res.body.contacts[0].firstName).toBe("John");
-    // expect(res.body.contacts[1].firstName).toBe("Jane");
+    expect(res.body.contacts[0].firstName).toBe("Bob");
+    expect(res.body.total).toBe(1);
   });
 
   test("PATCH /mycontacts/contacts/:id → met à jour un contact", async () => {
     Contact.findByIdAndUpdate.mockResolvedValue({
       _id: "123",
-      firstName: "Not yet updated",
+      firstName: "Updated",
       lastName: "User",
-      email: "toupdate.user@example.com",
+      email: "updated.user@example.com",
     });
     const res = await request(app)
       .patch("/mycontacts/contacts/123")

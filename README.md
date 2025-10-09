@@ -32,11 +32,18 @@ PORT=3000
 ```
 
 #### Commandes de lancement
-
+Api :
 ```bash
 cd server
 npm install
 npm run start
+```
+
+Tests : 
+```bash
+cd server
+npm install
+npm run test
 ```
 
 Les call http seront à faire à l'adresse suivante : [http://localhost:3000/mycontacts](http://localhost:3000/mycontacts) (3000 par défaut, en fonction de la variable PORT)
@@ -70,10 +77,14 @@ npm run build
 
 [https://mycontacts-frontend-679f.onrender.com/](https://mycontacts-frontend-679f.onrender.com/)
 
+Identifiants de test : 
+email : test@mail.com
+password : $Passw0rd% 
+
 ## Technologies
 
 - Node.js / Express
-- MongoDB Atlas
+- MongoDB
 - React (vite)
 - Swagger
 - JWT / bcrypt
