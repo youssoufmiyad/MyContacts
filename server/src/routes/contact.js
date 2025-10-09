@@ -60,7 +60,7 @@ const contactRouter = express.Router();
  *       500:
  *         description: Erreur serveur
  */
-contactRouter.get("/", contactController.getContacts);
+contactRouter.get("/", requireAuth, contactController.getContacts);
 
 /**
  * @swagger
@@ -87,7 +87,34 @@ contactRouter.get("/", contactController.getContacts);
  *       500:
  *         description: Erreur serveur
  */
-contactRouter.get("/id/:id", contactController.getContactById);
+contactRouter.get("/id/:id", requireAuth, contactController.getContactById);
+
+/**
+ * @swagger
+ * /contacts/search:
+ *   get:
+ *     summary: Recherche des contacts
+ *     tags: [Contacts]
+ *     parameters:
+ *       - in: query
+ *         name: q
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Terme de recherche
+ *     responses:
+ *       200:
+ *         description: Liste de contacts correspondant à la recherche
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Contact'
+ *       500:
+ *         description: Erreur serveur
+ */
+contactRouter.get("/search", requireAuth, contactController.searchContacts);
 
 /**
  * @swagger
@@ -114,7 +141,7 @@ contactRouter.get("/id/:id", contactController.getContactById);
  *       500:
  *         description: Erreur serveur
  */
-contactRouter.get("/:slug", contactController.getContactBySlug);
+contactRouter.get("/:slug", requireAuth, contactController.getContactBySlug);
 
 /**
  * @swagger
@@ -172,7 +199,7 @@ contactRouter.get("/:slug", contactController.getContactBySlug);
  *       500:
  *         description: Erreur serveur
  */
-contactRouter.post("/", contactController.addContact);
+contactRouter.post("/", requireAuth, contactController.addContact);
 
 /**
  * @swagger

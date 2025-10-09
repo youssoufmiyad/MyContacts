@@ -121,8 +121,59 @@ authRouter.post('/signup', authController.register);
  */
 authRouter.post('/login', authController.login);
 
+/**
+ * @swagger
+ * /auth/me:
+ *   get:
+ *     summary: Récupère les informations de l'utilisateur connecté
+ *     tags: [Auth]
+ *     responses:
+ *       200:
+ *         description: Informations de l'utilisateur récupérées avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                 email:
+ *                   type: string
+ *                 firstName:
+ *                   type: string
+ *                 lastName:
+ *                   type: string
+ *       401:
+ *         description: Non autorisé
+ *       500:
+ *         description: Erreur serveur
+ */
 authRouter.get('/me', requireAuth, authController.getCurrentUser);
 
+/**
+ * @swagger
+ * /auth/email-taken:
+ *   post:
+ *     summary: Vérifie si l'email est déjà pris
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: alice.dupont@example.com
+ *     responses:
+ *       200:
+ *         description: Email disponible
+ *       409:
+ *         description: Email déjà pris
+ *       500:
+ *         description: Erreur serveur
+ */
 authRouter.post('/email-taken', authController.emailTaken);
 
 export default authRouter;
